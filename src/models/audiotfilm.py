@@ -41,7 +41,7 @@ class AudioTfilm(Model):
       n_filtersizes = [65, 33, 17,  9,  9,  9,  9, 9, 9]
       downsampling_l = []
 
-      print 'building model...'
+      print('building model...')
 
       def _make_normalizer(x_in, n_filters, n_block):
         """applies an lstm layer on top of x_in"""        
@@ -97,7 +97,7 @@ class AudioTfilm(Model):
        
           x = _apply_normalizer(x, x_norm, nf, nb)
 
-          print 'D-Block: ', x.get_shape()
+          print('D-Block: ', x.get_shape())
           downsampling_l.append(x)
 
       # bottleneck layer
@@ -131,7 +131,7 @@ class AudioTfilm(Model):
           x = _apply_normalizer(x, x_norm, nf, nb)
           # (-1, n, 2f)
           x = merge([x, l_in], mode='concat', concat_axis=-1) 
-          print 'U-Block: ', x.get_shape()
+          print('U-Block: ', x.get_shape())
       
       # final conv layer
       with tf.name_scope('lastconv'):

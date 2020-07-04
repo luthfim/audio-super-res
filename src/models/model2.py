@@ -47,7 +47,7 @@ class Model2(object):
   def create_train_op(self, X, Y, alpha):
     # load params
     opt_params = self.opt_params
-    print 'creating train_op with params:', opt_params
+    print('creating train_op with params:', opt_params)
 
     # create loss
     self.loss = self.create_objective(X, Y, opt_params)
