@@ -3,6 +3,7 @@
 import os
 os.sys.path.append(os.path.abspath('.'))
 os.sys.path.append(os.path.dirname(os.path.abspath('.')))
+os.sys.path.append(os.path.abspath('models'))
 
 import matplotlib
 matplotlib.use('Agg')

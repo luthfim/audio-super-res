@@ -3,7 +3,7 @@ import time
 
 import numpy as np
 import tensorflow as tf
-import cPickle
+import pickle
 
 import librosa
 from keras import backend as K
@@ -291,8 +291,8 @@ class Model(object):
 						elif speaker == "multi":
 								s1 = "../data/vctk/multispeaker/full-"
 								s2 = "-vctk-multispeaker-interp-val." + str(r) + '.16000.-1.8192.0.25' 
-						full_clips_X = cPickle.load(open(s1 + 'data' + s2))
-						full_clips_Y = cPickle.load(open(s1 + 'label' + s2))
+						full_clips_X = pickle.load(open(s1 + 'data' + s2))
+						full_clips_Y = pickle.load(open(s1 + 'label' + s2))
 						
 						runs = 0
 									
