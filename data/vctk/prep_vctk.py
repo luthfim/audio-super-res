@@ -5,7 +5,7 @@ Create an HDF5 file of patches for training super-resolution model.
 import os, argparse
 import numpy as np
 import h5py
-import cPickle
+import pickle
 
 import librosa
 from scipy import interpolate
@@ -85,7 +85,8 @@ def add_data(h5_file, inputfiles, args, save_examples=False):
 
   print(len(file_list))
   for j, file_path in enumerate(file_list):
-    if j % 10 == 0: print '%d/%d' % (j, num_files)
+    if j % 10 == 0:
+        print('%d/%d' % (j, num_files))
 
     ID = int(re.search('p\d\d\d/', file_path).group(0)[1:-1])
     
