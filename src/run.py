@@ -9,7 +9,7 @@ matplotlib.use('Agg')
 
 import argparse
 import numpy as np
-import cPickle
+import pickle
 
 import models
 from models.model import default_opt
@@ -88,10 +88,10 @@ def train(args):
     X_train, Y_train = load_h5(args.train)
     X_val, Y_val = load_h5(args.val)
   else:
-    X_train = cPickle.load(open("../data/grocery/grocery/grocery-train-data" + args.train))
-    Y_train = cPickle.load(open("../data/grocery/grocery/grocery-train-label" + args.train))
-    X_val = cPickle.load(open("../data/grocery/grocery/grocery-test-data_" + args.train))
-    Y_val = cPickle.load(open("../data/grocery/grocery/grocery-test-label" + args.train))
+    X_train = pickle.load(open("../data/grocery/grocery/grocery-train-data" + args.train))
+    Y_train = pickle.load(open("../data/grocery/grocery/grocery-train-label" + args.train))
+    X_val = pickle.load(open("../data/grocery/grocery/grocery-test-data_" + args.train))
+    Y_val = pickle.load(open("../data/grocery/grocery/grocery-test-label" + args.train))
     X_train = np.reshape(X_train, [X_train.shape[0], X_train.shape[1], 1])
     Y_train = np.reshape(Y_train, [Y_train.shape[0], Y_train.shape[1], 1])
     X_val = np.reshape(X_val, [X_val.shape[0], X_val.shape[1], 1])
@@ -135,7 +135,7 @@ def eval(args):
           else:
             upsample_wav('../data/vctk/VCTK-Corpus/'+line.strip(), args, model)
         except EOFError:
-          print 'WARNING: Error reading file:', line.strip()
+          print('WARNING: Error reading file:', line.strip())
 
 def get_model(args, n_dim, r, from_ckpt=False, train=True, grocery='false'):
   """Create a model based on arguments"""  

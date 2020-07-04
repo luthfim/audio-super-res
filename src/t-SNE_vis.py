@@ -1,12 +1,9 @@
-
-
-
 import numpy as np
 import tensorflow as tf
 import pprint
-import cPickle
+import pickle
 from tqdm import tqdm
-from sklearn import(manifold, datasets, decomposition, ensemble, discriminant_analysis, random_projection)
+from sklearn import manifold, datasets, decomposition, ensemble, discriminant_analysis, random_projection
 from time import time
 import matplotlib.pyplot as plt
 from keras import backend as K
@@ -55,7 +52,7 @@ ids = np.load("../data/vctk/multispeaker/ID_list") # this associates each audio 
                                                    # i.e., the id on line 1 is the id of the sample in row 1 of the datafile
 
 print("loaded id list")
-data = cPickle.load(open("../data/vctk/multispeaker/full-data-vctk-multispeaker-interp-val.4.16000.-1.8192.0.25"))
+data = pickle.load(open("../data/vctk/multispeaker/full-data-vctk-multispeaker-interp-val.4.16000.-1.8192.0.25"))
 #data = np.array([[1, 2, 3, 4, 5, 6, 7]])
 print("loaded data")
 ##acs = []
@@ -74,7 +71,7 @@ with tf.Session() as sess:
     sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, allow_soft_placement=True))
     K.set_session(sess)  
     # load model
-    saver =tf.train.import_meta_graph('./full-snr-multispeaker_audiohybrid2.lr0.00300.1.g4.b32.d8192.r4.lr0.000300.1.g4.b32/model.ckpt-41761.meta')
+    saver = tf.train.import_meta_graph('./full-snr-multispeaker_audiohybrid2.lr0.00300.1.g4.b32.d8192.r4.lr0.000300.1.g4.b32/model.ckpt-41761.meta')
     graph = tf.get_default_graph()
     saver.restore(sess, tf.train.latest_checkpoint('./full-snr-multispeaker_audiohybrid2.lr0.00300.1.g4.b32.d8192.r4.lr0.000300.1.g4.b32'))
     #graph.clear_collection('losses')
@@ -89,7 +86,7 @@ with tf.Session() as sess:
         X_in = graph.get_tensor_by_name("X:0")
         alpha_in = graph.get_tensor_by_name("alpha:0")
 
-        x =np.reshape(data[i], (1, len(data[i]), 1))
+        x = np.reshape(data[i], (1, len(data[i]), 1))
         feed_dict = {X_in:x, alpha_in: 0.1}
         k_tensors = [n for n in graph.as_graph_def().node if 'keras_learning_phase' in n.name]
         #assert len(k_tensors) <= 1
@@ -110,10 +107,10 @@ with tf.Session() as sess:
             if layers[i] not in maps: maps[layers[i]] = []
             maps[layers[i]].append(a)
     
-    print used_ids
+    print(used_ids)
     for layer, acts in tqdm(maps.iteritems()):
         acts = np.array(acts)
-        print acts.shape
+        print(acts.shape)
         name =  re.sub("[/,:]", "_", layer)
         np.save('lstm_merge_activations_' +name, acts)
 
@@ -141,7 +138,7 @@ with tf.Session() as sess:
         acs = []
         for i in range(0, X_tsne.shape[0]):
             acs.append(speakerInfoDict[str(used_ids[i])][3])
-        colors =[accents[x] for x in acs]
+        colors = [accents[x] for x in acs]
         
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
@@ -153,9 +150,3 @@ with tf.Session() as sess:
         fig.savefig("lstm_merge_t-SNE_accent_" + name+".png")
         plt.clf()
     np.save('lstm_merge_used_ids', np.array(used_ids))
-
-
-
-
-
-
